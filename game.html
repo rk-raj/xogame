@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <title>XO Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .container-header {
+            margin: 20px;
+        }
+        .container-inner {
+            margin: 10px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(3, 60px);
+            gap: 1px; /* Optional: Adds a gap between the grid items */
+        }
+        .blk {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-sizing: border-box; /* Ensures the width and height include padding and borders */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-header">
+        <h1>XO GAME</h1>
+    </div>
+    <div class="container-inner">
+        <h1 id="result"></h1>
+    </div>
+    <div class="container-inner">
+        <button onclick="restart()">Re-Start</button>
+    </div>
+    <div class="container">
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+    </div>
+    <script>
+        let curr = 'X';
+        let win_flag = false;
+
+        function myfunc(e) {
+            if (win_flag || e.innerHTML) {
+                return;
+            }
+            e.innerHTML = curr;
+            curr = curr === 'X' ? 'O' : 'X';
+
+            const win_combinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            const cells = Array.from(document.getElementsByClassName('blk'));
+
+            for (const [a, b, c] of win_combinations) {
+                if (cells[a].innerHTML && cells[a].innerHTML === cells[b].innerHTML && cells[a].innerHTML === cells[c].innerHTML) {
+                    win_flag = true;
+                    document.getElementById('result').innerHTML = cells[a].innerHTML + " Won the Game!";
+                    return;
+                }
+            }
+
+            // Check for draw
+            const allFilled = cells.every(cell => cell.innerHTML);
+            if (allFilled) {
+                document.getElementById('result').innerHTML = "It's a Draw!";
+            }
+        }
+
+        function restart() {
+            const cells = document.getElementsByClassName('blk');
+            for (const cell of cells) {
+                cell.innerHTML = '';
+            }
+            win_flag = false;
+            curr = 'X';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-header">
+        <h1>XO GAME</h1>
+    </div>
+    <div class="container-inner">
+        <h1 id="result"></h1>
+    </div>
+    <div class="container-inner">
+        <button onclick="restart()">Re-Start</button>
+    </div>
+    <div class="container">
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+        <span class="blk" onclick="myfunc(this)"></span>
+    </div>
+</body>
+<script>
+    var curr = 'X';
+    var win_flag = false;
+    function myfunc(e){
+        if(win_flag){
+            return false;
+        }
+        if(!e.innerHTML){
+            e.innerHTML = curr;
+            (curr=='X')?(curr = 'O'):(curr='X');
+        }
+        let win_possible = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+        const element = Array.from(document.getElementsByClassName('blk'));
+        console.log(element);
+        console.log(document.getElementsByClassName('blk'))
+        for(i=0;i<8;i++){
+            if((element[win_possible[i][0]].innerHTML !== '') && (element[win_possible[i][1]].innerHTML !== '') && (element[win_possible[i][2]].innerHTML !== '')){
+                // console.log('TRUE1',element[win_possible[i][0]].innerHTML,win_possible[i][0])
+            
+
+                if((element[win_possible[i][0]].innerHTML === element[win_possible[i][1]].innerHTML) && (element[win_possible[i][2]].innerHTML === element[win_possible[i][0]].innerHTML)){
+                    console.log("TRUE")
+                    win_flag = true;
+                    document.getElementById('result').innerHTML = element[win_possible[i][0]].innerHTML+", Won the Game";
+                }
+            }    
+        } 
+        filled = element.every(ele => ele.innerHTML !='');
+        console.log(filled);
+        if(filled){
+            document.getElementById('result').innerHTML='it\' Draw'; 
+        }
+    }   
+
+    function restart(){
+        window.location.reload();
+    }
+
+</script>
+</html>
